@@ -8,9 +8,23 @@
 </head>
 <body>
     <h1>Sliding Puzzle</h1>
-    <div id="puzzle-container">
-        <div id="game-board"></div>
-        <button id="shuffle-button">Shuffle</button>
+    <div id="main-container">
+        <div id="game-area">
+            <div id="game-stats">
+                <span>Time: <span id="timer">0s</span></span>
+                <span>Moves: <span id="moves">0</span></span>
+            </div>
+            <div id="puzzle-container">
+                <div id="game-board"></div>
+                <button id="shuffle-button">Shuffle</button>
+            </div>
+        </div>
+        <div id="win-video-container">
+            <video id="win-video" width="400" controls>
+                <source src="mm.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

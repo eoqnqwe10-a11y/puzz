@@ -1,9 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
     const gameBoard = document.getElementById('game-board');
     const shuffleButton = document.getElementById('shuffle-button');
+    const timerElement = document.getElementById('timer');
+    const movesElement = document.getElementById('moves');
+
     const gridSize = 3;
     const imageUrl = 'asd.jpg'; // User's image
     let tiles = [];
+    let moves = 0;
+    let timer;
+    let seconds = 0;
+    let gameStarted = false;
+
+    function startTimer() {
+        if (gameStarted) return;
+        gameStarted = true;
+        timer = setInterval(() => {
+            seconds++;
+            timerElement.textContent = `${seconds}s`;
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timer);
+    }
+
+    function resetGame() {
+        stopTimer();
+        seconds = 0;
+        moves = 0;
+        gameStarted = false;
+        timerElement.textContent = '0s';
+        movesElement.textContent = '0';
+    }
 
     function createTiles() {
         tiles = [];
@@ -67,8 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Check if the clicked tile is adjacent to the empty tile
         if (Math.abs(clickedRow - emptyRow) + Math.abs(clickedCol - emptyCol) === 1) {
+            startTimer(); // Start timer on first valid move
             // Swap tiles
             [tiles[clickedIndex], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[clickedIndex]];
+            moves++;
+            movesElement.textContent = moves;
             renderBoard();
             checkWin();
         }
@@ -88,12 +120,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         if (tiles[tiles.length - 1] === null) {
-            setTimeout(() => alert('You win!'), 100); // Use timeout to allow board to render
+            stopTimer();
+            const videoContainer = document.getElementById('win-video-container');
+            const video = document.getElementById('win-video');
+            videoContainer.style.display = 'flex';
+            video.play();
         }
     }
 
     function init() {
-        // shuffleTiles now creates the initial puzzle state
+        resetGame();
         shuffleTiles();
         renderBoard();
     }
